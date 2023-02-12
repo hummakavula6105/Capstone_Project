@@ -8,11 +8,12 @@ from .models import User_Requests
 from .serializers import UserSerializer
 from .serializers import RequestSerializer
 from .serializers import UserRequestsSerializer
+from .serializers import Edit_Request
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_all_requests(request):
+def get_all_requests():
     requests = Request.objects.all()
     serializer = RequestSerializer(requests, many=True)
     return Response(serializer.data)
@@ -23,6 +24,22 @@ def get_all_requests(request):
 def user_requests(request):
 
     if request.method == 'POST':
+        serializer = RequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        requests = Request.objects.filter(request_id=request.query_params.get("request_id"))
+        serializer = RequestSerializer(requests, many=True)
+        return Response(serializer.data)
+    
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_requests(request):
+
+    if request.method == 'PUT':
         serializer = RequestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
