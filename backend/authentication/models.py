@@ -1,10 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+# from django.http import HttpResponse
+
+# class AdminAllowedPermissionTo:
+#     user = 'user',
+#     graphs = 'graphs',
+#     ADMIN_PERMISSION_AREAS = [
+#         ('user', 'user'),
+#         ('graphs', 'graphs'),
+#     ]
+
+#     def admin_view(admin_request):
+#         admin_user = admin_request.admin_user
+#         if admin_user.isAdmin == True:
+#             return HttpResponse("Access Granted")
+#         elif admin_user.area in [area for area, _ in AdminAllowedPermissionTo.ADMIN_PERMISSION_AREAS]:
+#             return HttpResponse("Access Granted")
+#         else:
+#             return HttpResponse("Unauthorized")
 
 
 class User(AbstractUser):
     isAdmin = models.BooleanField('admin status', default=False)
     isApprover = models.BooleanField('approver status', default=False)
+    # area = models.CharField(
+    #     max_length=20,
+    #     choices=AdminAllowedPermissionTo.ADMIN_PERMISSION_AREAS,
+    #     default=False
+    # )
+
+
+
     '''
     This is a custom version of the built in User class
     It contains all of the built in fields and functionality of the standard User

@@ -1,5 +1,5 @@
 from django.db import models
-from authentication.models import User
+from authentication.models import AbstractUser
 
 # Create your models here.
 
@@ -46,13 +46,13 @@ class Approvers(models.Model):
 
 
 class Admins(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)
 
 
 class User_Requests(models.Model):
     row_id = models.AutoField(primary_key=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, default=1)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)
     
 
 class Edit_Request(models.Model):

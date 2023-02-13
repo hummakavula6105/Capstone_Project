@@ -19,33 +19,26 @@ def get_all_requests():
     return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def user_requests(request):
+def new_request(request):
+    serializer = RequestSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    if request.method == 'POST':
-        serializer = RequestSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'GET':
-        requests = Request.objects.filter(request_id=request.query_params.get("request_id"))
-        serializer = RequestSerializer(requests, many=True)
-        return Response(serializer.data)
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def my_change_requests(request):
+#     serializer=RequestSerializer(data=request.data)
     
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def edit_requests(request):
-
-    if request.method == 'PUT':
-        serializer = RequestSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'GET':
-        requests = Request.objects.filter(request_id=request.query_params.get("request_id"))
-        serializer = RequestSerializer(requests, many=True)
-        return Response(serializer.data)
+    serializer = RequestSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
