@@ -49,7 +49,7 @@ class Admins(models.Model):
     user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)
 
 
-class User_Requests(models.Model):
+class My_Change_Requests(models.Model):
     row_id = models.AutoField(primary_key=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, default=1)
     user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)

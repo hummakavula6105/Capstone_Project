@@ -4,7 +4,7 @@ from .models import Area
 from .models import Approvers
 from .models import Admins
 from .models import Request
-from .models import User_Requests
+from .models import My_Change_Requests
 from .models import Edit_Request
 
 
@@ -47,9 +47,9 @@ class RequestSerializer(serializers.ModelSerializer):
     request_id = serializers.IntegerField(write_only=True)
 
 
-class UserRequestsSerializer(serializers.ModelSerializer):
+class MyChangeRequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User_Requests
+        model = My_Change_Requests
         fields = ['id', 'row_id', 'request_id', 'user_id']
         depth = 1
 
