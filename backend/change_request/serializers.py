@@ -1,3 +1,4 @@
+from dataclasses import fields
 from rest_framework import serializers
 from .models import User
 from .models import Area
@@ -50,12 +51,12 @@ class RequestSerializer(serializers.ModelSerializer):
 class MyChangeRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = My_Change_Requests
-        fields = ['id', 'row_id', 'request_id', 'user_id']
+        fields = ['id', 'request_id', 'user_id']
         depth = 1
 
 
-    class EditRequestSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Edit_Request
-            fields = ['id', 'row_id', 'request_id', 'user_id', 'date_requested', 'date_closed', 'area', 'description']
-            depth = 1
+class EditRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Edit_Request
+        fields = ['id', 'request_id', 'user_id', 'date_requested', 'date_closed', 'area', 'description']
+        depth = 1

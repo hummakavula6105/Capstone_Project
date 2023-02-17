@@ -21,14 +21,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    isAdmin = models.BooleanField('admin status', default=False)
-    isApprover = models.BooleanField('approver status', default=False)
-    # area = models.CharField(
-    #     max_length=20,
-    #     choices=AdminAllowedPermissionTo.ADMIN_PERMISSION_AREAS,
-    #     default=False
-    # )
-
+    pass
 
 
     '''
