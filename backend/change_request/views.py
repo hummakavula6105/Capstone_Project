@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -46,14 +47,14 @@ def approve_or_reject_request(request):
         return Response({'message': 'Request updated'}, status=status.HTTP_200_OK)
     except (KeyError, ValueError, Approvers.DoesNotExist):
         return Response({'message': 'Invalid request ID or user not authorized'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_change_requests(request, user_id):
     user=user.objects.get(id=user_id)
     if user:
         requests = Request.objects.get(owner_id=user_id)
-        serializer=MyChangeRequestSerializer(requests, many=True)
+        serializer=MyChangeRequestSerializer(request, many=True)
         return Response(serializer.data)
     else:
         return "None"
@@ -61,20 +62,18 @@ def my_change_requests(request, user_id):
 
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-def edit_request(request):
-    print(
-        'User', f"{request.user.id} {request.user.email} {request.user.username}")
+def edit_request(request, pk):
+    request = get_object_or_404(Request, pk=pk)
     if request.method == 'GET':
         request = Request.objects.filter(request_id=request.user.id)
         serializer = EditRequestSerializer(request)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = EditRequestSerializer(request_id=request.user.id)
+        serializer = EditRequestSerializer(request, data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(EditRequestSerializer.data, status=status.HTTP_201_CREATED)
-        return Response(EditRequestSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(serializer.data)
+        return Response(serializer.errors)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

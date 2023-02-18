@@ -1,9 +1,10 @@
 from django.db import models
+from authentication.models import User
 
 # Create your models here.
 
 class User(models.Model):
-    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
@@ -27,14 +28,15 @@ class Area(models.Model):
     ]
 
 class Request(models.Model):
-    id = models.AutoField(primary_key=True)
+    request_id = models.IntegerField(primary_key=User)
     date_requested = models.DateField()
-    date_closed = models.DateField()
+    expiration_date = models.DateField()
     area = models.CharField(
         max_length=20,
         choices=Area.AREA_CHOICES,
     )
-    description = models.CharField(max_length=800)
+    reason_for_request = models.CharField(max_length=800)
+    description_of_change = models.CharField(max_length=800)
     is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     
@@ -55,7 +57,7 @@ class My_Change_Requests(models.Model):
     
 
 class Edit_Request(models.Model):
-    request = models.ForeignKey(Request, on_delete=models.CASCADE)
+    edit_request = models.ForeignKey(Request, on_delete=models.CASCADE)
     edit = models.CharField(
         max_length=800,
     )

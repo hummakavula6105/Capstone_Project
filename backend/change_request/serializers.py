@@ -12,7 +12,7 @@ from .models import Edit_Request
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'user_id', 'first_name', 'last_name', 'email_address', 'isAdmin', 'isApprover']
+        fields = ['id', 'user_id', 'user', 'first_name', 'last_name', 'email', 'password', 'isAdmin', 'isApprover']
         depth = 1
 
     user_id = serializers.IntegerField(write_only=True)
@@ -42,7 +42,7 @@ class AdminsSerializers(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
-        fields = ['id', 'request_id', 'date_requested', 'date_closed', 'area', 'description', 'is_approved', 'is_rejected']
+        fields = ['id', 'request_id', 'date_requested', 'expiration_date', 'area', 'reason_for_request', 'description_of_change', 'is_approved', 'is_rejected']
         depth = 1
 
     request_id = serializers.IntegerField(write_only=True)
@@ -58,5 +58,5 @@ class MyChangeRequestSerializer(serializers.ModelSerializer):
 class EditRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Edit_Request
-        fields = ['id', 'request_id', 'user_id', 'date_requested', 'date_closed', 'area', 'description']
+        fields = ['id', 'edit_request', 'edit']
         depth = 1

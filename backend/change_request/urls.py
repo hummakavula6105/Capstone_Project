@@ -9,6 +9,4 @@ urlpatterns = [
     path('<int:user_id>', views.my_change_requests),
     path('<int:request_id>/edit_request', views.edit_request),
     path('<int:request_id>/approve_or_reject_request/', views.approve_or_reject_request),
-    # path('', graphs),
-    # path('', users),
 ]
